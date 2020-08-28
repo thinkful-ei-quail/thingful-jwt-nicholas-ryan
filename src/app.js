@@ -22,13 +22,13 @@ app.use('/api/things', thingsRouter);
 app.use('/api/reviews', reviewsRouter);
 app.use('/api/auth', authRouter);
 
-
 app.use(function errorHandler(error, req, res, next) {
   let response;
   if (NODE_ENV === 'production') {
     response = { error: 'Server error' };
   } else {
     console.error(error);
+    console.log('whateveraaaa');
     response = { error: error.message, object: error };
   }
   res.status(500).json(response);
