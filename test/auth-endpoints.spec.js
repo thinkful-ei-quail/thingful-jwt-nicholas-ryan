@@ -40,12 +40,28 @@ describe.only('Auth Endpoint', function () {
           supertest(app)
             .post('/api/auth/login')
             .send(loginAttemptBody)
-            .expect(400),
+            .expect(400,
           {
             error: `Missing '${field}' in request body`,
           }
-        );
+        ));
       });
+    });
+
+    it(`responds 400 'invalid user_name or password' when bad user_name`, () => {
+      const badUser = { user_name: 'not-user', password: 'good-pass' }
+      return supertest(app)
+        .post('/api/auth/login')
+        .send(badUser)
+        .expect(400, { error: `Incorrect user_name or password` })
+    });
+
+    it(`responds 400 'invalid user_name or password' when bad password`, () => {
+      const badPass = { user_name: 'dunder', password: 'bad-pass' }
+      return supertest(app)
+        .post('/api/auth/login')
+        .send(badPass)
+        .expect(400, { error: `Incorrect user_name or password` })
     });
   });
 });
